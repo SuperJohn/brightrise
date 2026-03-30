@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI for Recruiting Agencies — Bright Rise AI</title>
+  <meta name="description" content="Bright Rise AI helps boutique recruiting agencies source candidates faster, screen smarter, and automate outreach with AI — so your team can focus on placements." />
+  <meta name="theme-color" content="#080E1A" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* --- RECRUITING PAGE SPECIFIC --- */
+
+    /* Pain Points */
+    .pain-points {
+      padding-block: 7rem;
+    }
+    .pain-points__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .pain-points__left h2 { margin-bottom: 1.25rem; }
+    .pain-points__left p { color: var(--text-dim); font-size: 1.025rem; }
+    .pain-points__list { display: flex; flex-direction: column; gap: 1.75rem; list-style: none; }
+    .pain-points__item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .pain-points__icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .pain-points__item strong {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .pain-points__item p { color: var(--text-dim); font-size: 0.9rem; margin: 0; }
+
+    /* Pricing */
+    .pricing {
+      padding-block: 7rem;
+      background: var(--bg-2);
+    }
+    .pricing__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .pricing-card:hover {
+      border-color: rgba(240, 165, 0, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+    }
+    .pricing-card--featured {
+      border-color: var(--gold);
+    }
+    .pricing-card--featured::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+    }
+    .pricing-card__badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #080E1A;
+      background: var(--gold);
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1.25rem;
+      align-self: flex-start;
+    }
+    .pricing-card__name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .pricing-card__price {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
+    }
+    .pricing-card__price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .pricing-card__desc {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+    .pricing-card__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+    .pricing-card__features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+    .pricing-card__features li svg {
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .pricing-card .btn { width: 100%; justify-content: center; }
+
+    /* How it works */
+    .how-it-works {
+      padding-block: 7rem;
+    }
+    .how-it-works__steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-top: 4rem;
+      position: relative;
+    }
+    .how-it-works__steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+      opacity: 0.3;
+    }
+    .step {
+      text-align: center;
+      position: relative;
+    }
+    .step__number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 2px solid rgba(240, 165, 0, 0.3);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .step__title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+    .step__desc {
+      color: var(--text-dim);
+      font-size: 0.825rem;
+      line-height: 1.5;
+      max-width: 180px;
+      margin-inline: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .pain-points__inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .pricing__grid {
+        grid-template-columns: 1fr;
+      }
+      .how-it-works__steps {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .how-it-works__steps::before {
+        display: none;
+      }
+      .step {
+        text-align: left;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .step__number {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+      }
+      .step__desc {
+        max-width: none;
+        margin-inline: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="index.html" class="nav__logo" aria-label="Bright Rise AI home">
+      <svg class="nav__logo-mark" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad)"/>
+        <defs>
+          <linearGradient id="star-grad" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#F0A500"/>
+            <stop offset="100%" stop-color="#3B8BFF"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Main navigation">
+      <a href="index.html#services">Services</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact" class="nav__cta">Book a Free Audit</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      <a href="index.html#services">Services</a>
+      <a href="#solutions">Solutions</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Book a Free Audit</a>
+    </nav>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__glow hero__glow--gold"></div>
+        <div class="hero__glow hero__glow--blue"></div>
+        <div class="hero__grid"></div>
+      </div>
+      <div class="container hero__content">
+        <p class="eyebrow reveal">AI for Recruiting Agencies</p>
+        <h1 class="hero__headline reveal">
+          Fill Roles Faster.<br />
+          <span class="gradient-text">Source Smarter.</span>
+        </h1>
+        <p class="hero__lede reveal">
+          We help boutique recruiting agencies deploy AI that sources candidates,
+          screens resumes, and automates outreach — so your team can focus on
+          relationships and placements.
+        </p>
+        <div class="hero__actions reveal">
+          <a href="#contact" class="btn btn--primary">Book a Free AI Audit</a>
+          <a href="sourcing-demo.html" class="btn btn--ghost">See the Demo</a>
+        </div>
+        <div class="hero__stats reveal">
+          <div class="stat">
+            <span class="stat__number">50<span class="stat__pct">%</span></span>
+            <span class="stat__label">Faster Time-to-Hire</span>
+          </div>
+          <div class="stat__divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat__number">3<span class="stat__plus">x</span></span>
+            <span class="stat__label">More Candidates Sourced</span>
+          </div>
+          <div class="stat__divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat__number">45<span class="stat__pct">%</span></span>
+            <span class="stat__label">Outreach Open Rate</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="services" id="solutions">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">What We Deploy For You</p>
+          <h2>AI that works while<br />your recruiters sleep.</h2>
+          <p class="section-sub">From sourcing to screening to outreach — we build and deploy AI systems tailored to how your agency actually works.</p>
+        </div>
+        <div class="services__grid">
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                <path d="M11 8v6M8 11h6"/>
+              </svg>
+            </div>
+            <h3>AI Candidate Sourcing</h3>
+            <p>Autonomous agents that search 800M+ public profiles and build qualified shortlists — so your team stops spending 30 hours a week on manual sourcing.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <path d="M9 15l2 2 4-4"/>
+              </svg>
+            </div>
+            <h3>Smart Screening &amp; Matching</h3>
+            <p>AI that analyzes resumes in seconds and ranks candidates by fit, skills, and experience — cutting screening time by 80% while improving placement quality.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <h3>Outreach Automation</h3>
+            <p>Personalized candidate engagement sequences that reference specific skills and projects — achieving 40-50% open rates vs. 20-25% for generic recruiter emails.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">How It Works</p>
+          <h2>From job req to shortlist<br />in hours, not weeks.</h2>
+        </div>
+        <div class="how-it-works__steps">
+          <div class="step reveal">
+            <div class="step__number">1</div>
+            <div>
+              <p class="step__title">Define the Role</p>
+              <p class="step__desc">Enter job requirements in plain language — skills, experience, location, industry.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step__number">2</div>
+            <div>
+              <p class="step__title">AI Sources</p>
+              <p class="step__desc">Our agents search 800M+ profiles across LinkedIn, GitHub, and 30+ data sources.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step__number">3</div>
+            <div>
+              <p class="step__title">Screen &amp; Rank</p>
+              <p class="step__desc">Candidates are scored and ranked by match quality, not just keyword overlap.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step__number">4</div>
+            <div>
+              <p class="step__title">Personalized Outreach</p>
+              <p class="step__desc">AI crafts individualized messages referencing each candidate's specific background.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step__number">5</div>
+            <div>
+              <p class="step__title">You Close</p>
+              <p class="step__desc">Your recruiters step in where they add the most value — building relationships and making placements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIN POINTS -->
+    <section class="pain-points" id="why">
+      <div class="container pain-points__inner">
+        <div class="pain-points__left reveal">
+          <p class="eyebrow">The Problem</p>
+          <h2>Small agencies shouldn't need<br />enterprise budgets to compete.</h2>
+          <p>Your competitors are already using AI. But most tools are built for massive staffing firms with massive budgets. We built our solutions specifically for agencies like yours.</p>
+        </div>
+        <ul class="pain-points__list" role="list">
+          <li class="pain-points__item reveal">
+            <svg class="pain-points__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <path d="M7 7l6 6M13 7l-6 6" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>30 hours a week lost to sourcing</strong>
+              <p>Your recruiters are buried in LinkedIn searches and Boolean strings instead of building client relationships.</p>
+            </div>
+          </li>
+          <li class="pain-points__item reveal">
+            <svg class="pain-points__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <path d="M7 7l6 6M13 7l-6 6" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>Losing candidates to faster agencies</strong>
+              <p>By the time you find and reach out to top talent, a larger agency with AI tools has already made contact.</p>
+            </div>
+          </li>
+          <li class="pain-points__item reveal">
+            <svg class="pain-points__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <path d="M7 7l6 6M13 7l-6 6" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>Enterprise tools that don't fit</strong>
+              <p>Most AI recruiting platforms cost $10K+/month and require dedicated ops teams your agency doesn't have.</p>
+            </div>
+          </li>
+          <li class="pain-points__item reveal">
+            <svg class="pain-points__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <path d="M7 7l6 6M13 7l-6 6" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>Generic outreach that gets ignored</strong>
+              <p>Mass emails get 20% open rates. Candidates know when they're getting a template — and they don't respond.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">Pricing</p>
+          <h2>Enterprise-grade AI sourcing<br />without the enterprise price tag.</h2>
+          <p class="section-sub">Start small, see results, then scale. No long-term contracts required.</p>
+        </div>
+        <div class="pricing__grid">
+
+          <div class="pricing-card reveal">
+            <p class="pricing-card__name">Starter</p>
+            <p class="pricing-card__price">$2,000 <span>/mo</span></p>
+            <p class="pricing-card__desc">Perfect for agencies ready to dip their toes into AI recruiting.</p>
+            <ul class="pricing-card__features">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                AI recruiting audit &amp; roadmap
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Job description optimization
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Basic outreach automation
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Monthly performance review
+              </li>
+            </ul>
+            <a href="#contact" class="btn btn--ghost">Get Started</a>
+          </div>
+
+          <div class="pricing-card pricing-card--featured reveal">
+            <span class="pricing-card__badge">Most Popular</span>
+            <p class="pricing-card__name">Growth</p>
+            <p class="pricing-card__price">$5,000 <span>/mo</span></p>
+            <p class="pricing-card__desc">For agencies ready to scale placements with dedicated AI agents.</p>
+            <ul class="pricing-card__features">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Everything in Starter
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Custom AI sourcing agent
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                ATS/CRM AI integration
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Automated resume screening
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Weekly strategy sessions
+              </li>
+            </ul>
+            <a href="#contact" class="btn btn--primary">Get Started</a>
+          </div>
+
+          <div class="pricing-card reveal">
+            <p class="pricing-card__name">Custom</p>
+            <p class="pricing-card__price">Let's Talk</p>
+            <p class="pricing-card__desc">For agencies that want a fully autonomous AI recruiting operation.</p>
+            <ul class="pricing-card__features">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Everything in Growth
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Full autonomous agent workflows
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Predictive analytics &amp; reporting
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Bias auditing &amp; compliance
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Dedicated AI engineer support
+              </li>
+            </ul>
+            <a href="#contact" class="btn btn--ghost">Contact Us</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container contact__inner">
+        <div class="contact__glow" aria-hidden="true"></div>
+        <div class="contact__content reveal">
+          <p class="eyebrow">Get Started</p>
+          <h2>Book your free<br />AI Recruiting Audit.</h2>
+          <p>In 30 minutes, we'll analyze your current sourcing workflow and show you exactly where AI can save your team time and fill roles faster. No sales pitch — just a clear picture of what's possible.</p>
+          <a href="mailto:hello@brightrise.ai" class="btn btn--primary">hello@brightrise.ai</a>
+          <p class="contact__note">Response within one business day.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="index.html" class="nav__logo footer__logo" aria-label="Bright Rise AI home">
+        <svg class="nav__logo-mark" width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad-footer)"/>
+          <defs>
+            <linearGradient id="star-grad-footer" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F0A500"/>
+              <stop offset="100%" stop-color="#3B8BFF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+      </a>
+      <p class="footer__copy">&copy; <span id="year"></span> Bright Rise AI. All rights reserved.</p>
+      <div class="footer__social">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

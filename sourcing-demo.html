@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Sourcing Agent Demo — Bright Rise AI</title>
+  <meta name="description" content="See how Bright Rise AI's candidate sourcing agent finds and ranks qualified candidates in real time." />
+  <meta name="theme-color" content="#080E1A" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* --- DEMO PAGE STYLES --- */
+    .demo-hero {
+      padding: 8rem 0 2rem;
+      text-align: center;
+    }
+    .demo-hero h1 {
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+    .demo-hero p {
+      color: var(--text-dim);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .demo-app {
+      padding: 2rem 0 6rem;
+    }
+    .demo-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* Input Panel */
+    .input-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      position: sticky;
+      top: 6rem;
+    }
+    .input-panel h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    .field {
+      margin-bottom: 1.25rem;
+    }
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.925rem;
+      transition: border-color var(--transition);
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    .field select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B82A8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+    }
+    .input-panel__hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      line-height: 1.55;
+    }
+
+    /* Mode Toggle */
+    .mode-toggle {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 1.25rem;
+    }
+    .mode-toggle__btn {
+      flex: 1;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      transition: background var(--transition), color var(--transition);
+    }
+    .mode-toggle__btn.active {
+      background: var(--surface);
+      color: var(--text);
+    }
+    .mode-toggle__btn:hover:not(.active) {
+      color: var(--text-dim);
+    }
+
+    #start-btn {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    #start-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Parsed requirements */
+    .parsed-req {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1rem;
+      background: rgba(34, 197, 94, 0.06);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 10px;
+    }
+    .parsed-req.visible { display: block; }
+    .parsed-req__header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #22c55e;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+    }
+    .parsed-req__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .parsed-tag {
+      padding: 0.2rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .parsed-tag.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .parsed-tag--role {
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid rgba(240, 165, 0, 0.2);
+    }
+    .parsed-tag--skill {
+      background: var(--blue-dim);
+      color: var(--blue);
+      border: 1px solid rgba(59, 139, 255, 0.15);
+    }
+    .parsed-tag--meta {
+      background: rgba(139, 92, 246, 0.1);
+      color: #a78bfa;
+      border: 1px solid rgba(139, 92, 246, 0.15);
+    }
+
+    /* Results Panel */
+    .results-panel {
+      min-height: 400px;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+    }
+    .stats-bar__item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .stats-bar__value {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .stats-bar__label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .stats-bar__divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border);
+    }
+
+    /* Search Status */
+    .search-status {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: var(--gold-dim);
+      border: 1px solid rgba(240, 165, 0, 0.2);
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .search-status.active { display: flex; }
+    .search-status.done {
+      background: var(--blue-dim);
+      border-color: rgba(59, 139, 255, 0.2);
+      color: var(--blue);
+    }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid transparent;
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    .search-status.done .spinner { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Candidate Cards */
+    .candidates {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .candidate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease, border-color var(--transition), box-shadow var(--transition);
+    }
+    .candidate-card.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .candidate-card:hover {
+      border-color: rgba(240, 165, 0, 0.25);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .candidate-card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .candidate-card__info h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+    .candidate-card__title {
+      color: var(--text-dim);
+      font-size: 0.875rem;
+    }
+    .match-score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .match-score--high {
+      background: rgba(34, 197, 94, 0.12);
+      color: #22c55e;
+      border: 2px solid rgba(34, 197, 94, 0.3);
+    }
+    .match-score--med {
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 2px solid rgba(240, 165, 0, 0.3);
+    }
+    .candidate-card__summary {
+      color: var(--text-dim);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .candidate-card__skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .skill-tag {
+      padding: 0.25rem 0.65rem;
+      background: var(--blue-dim);
+      border: 1px solid rgba(59, 139, 255, 0.15);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue);
+    }
+    .candidate-card__actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .candidate-card__actions .btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+    .empty-state svg {
+      margin: 0 auto 1.25rem;
+      opacity: 0.4;
+    }
+    .empty-state p {
+      font-size: 0.95rem;
+    }
+
+    /* Bulk Action */
+    .bulk-action {
+      display: none;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .bulk-action.visible { display: block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .demo-layout {
+        grid-template-columns: 1fr;
+      }
+      .input-panel {
+        position: static;
+      }
+      .stats-bar {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .stats-bar__divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="index.html" class="nav__logo" aria-label="Bright Rise AI home">
+      <svg class="nav__logo-mark" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad)"/>
+        <defs>
+          <linearGradient id="star-grad" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#F0A500"/>
+            <stop offset="100%" stop-color="#3B8BFF"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Main navigation">
+      <a href="recruiting.html">Recruiting</a>
+      <a href="recruiting.html#pricing">Pricing</a>
+      <a href="recruiting.html#contact" class="nav__cta">Book a Free Audit</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      <a href="recruiting.html">Recruiting</a>
+      <a href="recruiting.html#pricing">Pricing</a>
+      <a href="recruiting.html#contact">Book a Free Audit</a>
+    </nav>
+  </div>
+
+  <main>
+    <section class="demo-hero">
+      <div class="container">
+        <p class="eyebrow">Live Demo</p>
+        <h1>AI Sourcing Agent</h1>
+        <p>Enter your job requirements and watch our AI agent discover, score, and shortlist qualified candidates in real time.</p>
+      </div>
+    </section>
+
+    <section class="demo-app">
+      <div class="container">
+        <div class="demo-layout">
+
+          <!-- Input Panel -->
+          <div class="input-panel">
+            <h2>Job Requirements</h2>
+
+            <!-- Mode Toggle -->
+            <div class="mode-toggle" role="tablist">
+              <button class="mode-toggle__btn active" role="tab" aria-selected="true" data-mode="structured">Structured</button>
+              <button class="mode-toggle__btn" role="tab" aria-selected="false" data-mode="freetext">Paste Job Req</button>
+            </div>
+
+            <!-- Structured Mode -->
+            <div class="input-mode" id="mode-structured">
+              <div class="field">
+                <label for="role-title">Role Title</label>
+                <input type="text" id="role-title" value="Senior Full-Stack Engineer" />
+              </div>
+              <div class="field">
+                <label for="skills">Key Skills</label>
+                <input type="text" id="skills" value="React, Node.js, TypeScript, AWS" />
+              </div>
+              <div class="field">
+                <label for="experience">Experience Level</label>
+                <select id="experience">
+                  <option>Junior (0-2 years)</option>
+                  <option selected>Mid-Level (3-5 years)</option>
+                  <option>Senior (5-8 years)</option>
+                  <option>Staff+ (8+ years)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="location">Location</label>
+                <input type="text" id="location" value="San Francisco Bay Area" />
+              </div>
+              <div class="field">
+                <label for="notes">Additional Notes</label>
+                <textarea id="notes" placeholder="e.g. Startup experience preferred, open to remote...">Startup experience preferred, open to remote candidates</textarea>
+              </div>
+            </div>
+
+            <!-- Free Text Mode -->
+            <div class="input-mode" id="mode-freetext" style="display:none">
+              <p class="input-panel__hint">Paste a job description, intake notes, or just describe what you're looking for. Our AI parses it automatically.</p>
+              <div class="field">
+                <label for="hiring-req">Hiring Requisition</label>
+                <textarea id="hiring-req" rows="14" placeholder="e.g. We need a Senior Full-Stack Engineer for our fintech startup in SF. Must have 5+ years experience with React, Node.js, TypeScript, and AWS...">We're hiring a Senior Full-Stack Engineer for our Series B fintech startup in San Francisco. This person will lead a 4-person team rebuilding our checkout and payments infrastructure.
+
+Must-haves:
+- 5+ years with React, Node.js, and TypeScript
+- Production experience with AWS (Lambda, DynamoDB, SQS)
+- Built systems handling 10K+ transactions/day
+- Startup experience (Series A-C stage)
+
+Nice-to-haves:
+- Payment integrations (Stripe, Plaid)
+- GraphQL API design
+- Experience mentoring junior engineers
+
+Comp: $180-220K base + equity. Open to remote (US timezones). Start date ASAP.</textarea>
+              </div>
+              <!-- Parsed requirements (shown after AI parsing) -->
+              <div class="parsed-req" id="parsed-req">
+                <div class="parsed-req__header">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="3.5,8 6.5,11 12.5,5" stroke="#22c55e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>AI Parsed Requirements</span>
+                </div>
+                <div class="parsed-req__tags" id="parsed-tags"></div>
+              </div>
+            </div>
+
+            <button class="btn btn--primary" id="start-btn">Start Sourcing</button>
+          </div>
+
+          <!-- Results Panel -->
+          <div class="results-panel">
+            <div class="stats-bar">
+              <div class="stats-bar__item">
+                <span class="stats-bar__value" id="stat-scanned">0</span>
+                <span class="stats-bar__label">Profiles Scanned</span>
+              </div>
+              <div class="stats-bar__divider"></div>
+              <div class="stats-bar__item">
+                <span class="stats-bar__value" id="stat-shortlisted">0</span>
+                <span class="stats-bar__label">Shortlisted</span>
+              </div>
+              <div class="stats-bar__divider"></div>
+              <div class="stats-bar__item">
+                <span class="stats-bar__value" id="stat-match">0%</span>
+                <span class="stats-bar__label">Avg Match</span>
+              </div>
+            </div>
+
+            <div class="search-status" id="search-status">
+              <div class="spinner"></div>
+              <span id="status-text">Searching across LinkedIn, GitHub, and 30+ sources...</span>
+            </div>
+
+            <div class="candidates" id="candidates">
+              <div class="empty-state" id="empty-state">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <p>Enter job requirements and click "Start Sourcing" to see the AI agent in action.</p>
+              </div>
+            </div>
+
+            <div class="bulk-action" id="bulk-action">
+              <a href="recruiting.html#contact" class="btn btn--primary">Send Personalized Outreach to All</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="index.html" class="nav__logo footer__logo" aria-label="Bright Rise AI home">
+        <svg class="nav__logo-mark" width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad-footer)"/>
+          <defs>
+            <linearGradient id="star-grad-footer" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F0A500"/>
+              <stop offset="100%" stop-color="#3B8BFF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+      </a>
+      <p class="footer__copy">&copy; <span id="year"></span> Bright Rise AI. All rights reserved.</p>
+      <div class="footer__social">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  (function() {
+    const candidates = [
+      {
+        name: "Sarah Chen",
+        title: "Senior Software Engineer at Stripe",
+        score: 96,
+        summary: "8 years building payment systems. Led migration from monolith to microservices serving 2M+ requests/day. Active open-source contributor to React ecosystem.",
+        skills: ["React", "Node.js", "TypeScript", "AWS", "PostgreSQL", "GraphQL"],
+        scoreClass: "high"
+      },
+      {
+        name: "Marcus Johnson",
+        title: "Staff Engineer at Vercel",
+        score: 93,
+        summary: "7 years full-stack experience. Built developer tools used by 50K+ engineers. Deep expertise in serverless architecture and edge computing.",
+        skills: ["React", "TypeScript", "Node.js", "AWS Lambda", "Next.js", "Redis"],
+        scoreClass: "high"
+      },
+      {
+        name: "Priya Patel",
+        title: "Full-Stack Lead at Notion",
+        score: 91,
+        summary: "6 years at high-growth startups. Scaled real-time collaboration features from 100K to 5M users. Strong background in distributed systems.",
+        skills: ["React", "TypeScript", "Node.js", "AWS", "WebSockets", "MongoDB"],
+        scoreClass: "high"
+      },
+      {
+        name: "Alex Rivera",
+        title: "Senior Engineer at Coinbase",
+        score: 89,
+        summary: "5 years in fintech. Built compliance automation pipeline saving 200 engineering hours/month. Passionate about developer experience and testing.",
+        skills: ["React", "Node.js", "TypeScript", "AWS", "Docker", "Terraform"],
+        scoreClass: "high"
+      },
+      {
+        name: "Emily Zhang",
+        title: "Engineering Manager at Figma",
+        score: 87,
+        summary: "6 years IC experience before moving to management. Looking to return to hands-on engineering. Deep frontend architecture expertise.",
+        skills: ["React", "TypeScript", "WebGL", "Node.js", "AWS", "C++"],
+        scoreClass: "high"
+      },
+      {
+        name: "Jordan Kim",
+        title: "Senior Developer at Shopify",
+        score: 84,
+        summary: "5 years building e-commerce infrastructure. Led migration of checkout flow to React, improving conversion by 12%. Strong DevOps background.",
+        skills: ["React", "Node.js", "TypeScript", "Ruby", "AWS", "Kubernetes"],
+        scoreClass: "med"
+      },
+      {
+        name: "David Okonkwo",
+        title: "Full-Stack Engineer at Linear",
+        score: 82,
+        summary: "4 years at developer-focused startups. Built real-time sync engine handling 10K concurrent users. Open to remote roles.",
+        skills: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSockets"],
+        scoreClass: "med"
+      },
+      {
+        name: "Lisa Nakamura",
+        title: "Senior Engineer at Datadog",
+        score: 79,
+        summary: "5 years in observability and monitoring. Built dashboards processing 1B+ data points/day. Strong systems thinking and debugging skills.",
+        skills: ["React", "Go", "TypeScript", "AWS", "Elasticsearch", "Kafka"],
+        scoreClass: "med"
+      }
+    ];
+
+    // Simulated parsed tags from the hiring req
+    const parsedTags = [
+      { text: "Senior Full-Stack Engineer", type: "role" },
+      { text: "5+ years", type: "meta" },
+      { text: "React", type: "skill" },
+      { text: "Node.js", type: "skill" },
+      { text: "TypeScript", type: "skill" },
+      { text: "AWS", type: "skill" },
+      { text: "Lambda", type: "skill" },
+      { text: "DynamoDB", type: "skill" },
+      { text: "Fintech", type: "meta" },
+      { text: "San Francisco", type: "meta" },
+      { text: "Remote OK", type: "meta" },
+      { text: "Stripe/Plaid", type: "skill" },
+      { text: "GraphQL", type: "skill" },
+      { text: "Team Lead", type: "role" },
+      { text: "$180-220K", type: "meta" },
+    ];
+
+    const parsingMessages = [
+      "Reading hiring requisition...",
+      "Extracting role requirements...",
+      "Identifying required skills and technologies...",
+      "Parsing experience level and seniority...",
+      "Detecting location and remote preferences...",
+      "Building search criteria..."
+    ];
+
+    const statusMessages = [
+      "Searching across LinkedIn, GitHub, and 30+ sources...",
+      "Analyzing 12,847 profiles matching parsed criteria...",
+      "Cross-referencing skills with project contributions...",
+      "Scoring candidates by experience relevance...",
+      "Evaluating cultural fit and startup signals...",
+      "Generating personalized match reports...",
+      "Ranking candidates by composite match score...",
+      "Finalizing shortlist..."
+    ];
+
+    const startBtn = document.getElementById("start-btn");
+    const searchStatus = document.getElementById("search-status");
+    const statusText = document.getElementById("status-text");
+    const candidatesEl = document.getElementById("candidates");
+    const emptyState = document.getElementById("empty-state");
+    const bulkAction = document.getElementById("bulk-action");
+    const statScanned = document.getElementById("stat-scanned");
+    const statShortlisted = document.getElementById("stat-shortlisted");
+    const statMatch = document.getElementById("stat-match");
+    const parsedReq = document.getElementById("parsed-req");
+    const parsedTagsEl = document.getElementById("parsed-tags");
+    const hiringReq = document.getElementById("hiring-req");
+
+    // Mode toggle
+    let currentMode = "structured";
+    const toggleBtns = document.querySelectorAll(".mode-toggle__btn");
+    const modeStructured = document.getElementById("mode-structured");
+    const modeFreetext = document.getElementById("mode-freetext");
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.mode;
+        if (mode === currentMode) return;
+        currentMode = mode;
+        toggleBtns.forEach(b => {
+          b.classList.toggle("active", b.dataset.mode === mode);
+          b.setAttribute("aria-selected", b.dataset.mode === mode);
+        });
+        modeStructured.style.display = mode === "structured" ? "block" : "none";
+        modeFreetext.style.display = mode === "freetext" ? "block" : "none";
+      });
+    });
+
+    function animateCounter(el, target, suffix, duration) {
+      const start = parseInt(el.textContent) || 0;
+      const range = target - start;
+      const startTime = performance.now();
+      function step(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + range * eased);
+        el.textContent = current.toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function createCandidateCard(candidate) {
+      const card = document.createElement("div");
+      card.className = "candidate-card";
+      card.innerHTML = `
+        <div class="candidate-card__header">
+          <div class="candidate-card__info">
+            <h3>${candidate.name}</h3>
+            <p class="candidate-card__title">${candidate.title}</p>
+          </div>
+          <div class="match-score match-score--${candidate.scoreClass}">${candidate.score}%</div>
+        </div>
+        <p class="candidate-card__summary">${candidate.summary}</p>
+        <div class="candidate-card__skills">
+          ${candidate.skills.map(s => `<span class="skill-tag">${s}</span>`).join("")}
+        </div>
+        <div class="candidate-card__actions">
+          <button class="btn btn--ghost" onclick="this.textContent='Profile Viewed'; this.disabled=true; this.style.opacity='0.5';">View Profile</button>
+          <button class="btn btn--primary" onclick="this.textContent='Outreach Sent!'; this.disabled=true;">Send Outreach</button>
+        </div>
+      `;
+      return card;
+    }
+
+    let running = false;
+
+    function resetUI() {
+      emptyState.style.display = "none";
+      bulkAction.classList.remove("visible");
+      candidatesEl.querySelectorAll(".candidate-card").forEach(c => c.remove());
+      parsedReq.classList.remove("visible");
+      parsedTagsEl.innerHTML = "";
+      statScanned.textContent = "0";
+      statShortlisted.textContent = "0";
+      statMatch.textContent = "0%";
+    }
+
+    function startSourcingPhase() {
+      startBtn.textContent = "Sourcing...";
+      searchStatus.className = "search-status active";
+      statusText.textContent = statusMessages[0];
+      animateCounter(statScanned, 12847, "", 4000);
+
+      let msgIndex = 0;
+      const msgInterval = setInterval(() => {
+        msgIndex++;
+        if (msgIndex < statusMessages.length) {
+          statusText.textContent = statusMessages[msgIndex];
+        }
+      }, 600);
+
+      let revealed = 0;
+      const revealInterval = setInterval(() => {
+        if (revealed >= candidates.length) {
+          clearInterval(revealInterval);
+          clearInterval(msgInterval);
+          searchStatus.className = "search-status active done";
+          statusText.textContent = `Complete — ${candidates.length} qualified candidates found from 12,847 profiles scanned.`;
+          bulkAction.classList.add("visible");
+          startBtn.textContent = "Start Sourcing";
+          startBtn.disabled = false;
+          running = false;
+          return;
+        }
+
+        const card = createCandidateCard(candidates[revealed]);
+        candidatesEl.appendChild(card);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => card.classList.add("visible"));
+        });
+
+        revealed++;
+        animateCounter(statShortlisted, revealed, "", 300);
+        const avgScore = Math.round(
+          candidates.slice(0, revealed).reduce((s, c) => s + c.score, 0) / revealed
+        );
+        animateCounter(statMatch, avgScore, "%", 300);
+      }, 550);
+    }
+
+    startBtn.addEventListener("click", function() {
+      if (running) return;
+      running = true;
+      startBtn.disabled = true;
+      resetUI();
+
+      if (currentMode === "freetext") {
+        if (!hiringReq.value.trim()) {
+          hiringReq.focus();
+          running = false;
+          startBtn.disabled = false;
+          return;
+        }
+
+        // Phase 1: AI Parsing animation
+        startBtn.textContent = "Parsing...";
+        searchStatus.className = "search-status active";
+        statusText.textContent = parsingMessages[0];
+
+        let parseMsg = 0;
+        const parseMsgInterval = setInterval(() => {
+          parseMsg++;
+          if (parseMsg < parsingMessages.length) {
+            statusText.textContent = parsingMessages[parseMsg];
+          }
+        }, 400);
+
+        setTimeout(() => {
+          clearInterval(parseMsgInterval);
+          statusText.textContent = "Requirements parsed successfully.";
+
+          parsedReq.classList.add("visible");
+          parsedTags.forEach((tag, i) => {
+            const el = document.createElement("span");
+            el.className = `parsed-tag parsed-tag--${tag.type}`;
+            el.textContent = tag.text;
+            parsedTagsEl.appendChild(el);
+            setTimeout(() => el.classList.add("visible"), i * 80);
+          });
+
+          // Phase 2: Start sourcing after tags shown
+          setTimeout(() => startSourcingPhase(), 1200);
+        }, parsingMessages.length * 400 + 200);
+
+      } else {
+        // Structured mode: go straight to sourcing
+        startSourcingPhase();
+      }
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  })();
+  </script>
+</body>
+</html>
