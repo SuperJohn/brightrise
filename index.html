@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bright Rise AI — Strategic AI Consulting</title>
+  <meta name="description" content="Bright Rise AI helps mid-market and enterprise teams design, build, and deploy AI systems that create real business impact." />
+  <meta name="theme-color" content="#080E1A" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="#" class="nav__logo" aria-label="Bright Rise AI home">
+      <svg class="nav__logo-mark" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad)"/>
+        <defs>
+          <linearGradient id="star-grad" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#F0A500"/>
+            <stop offset="100%" stop-color="#3B8BFF"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Main navigation">
+      <a href="#services">Services</a>
+      <a href="#contact" class="nav__cta">Book a Call</a>
+    </nav>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Mobile navigation">
+      <a href="#services">Services</a>
+      <a href="#contact">Book a Call</a>
+    </nav>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__glow hero__glow--gold"></div>
+        <div class="hero__glow hero__glow--blue"></div>
+        <div class="hero__grid"></div>
+      </div>
+      <div class="container hero__content">
+        <p class="eyebrow reveal">Strategic AI Consulting</p>
+        <h1 class="hero__headline reveal">
+          Turn AI Potential<br />
+          <span class="gradient-text">Into Business Reality</span>
+        </h1>
+        <p class="hero__lede reveal">
+          We help ambitious teams design, build, and deploy AI systems
+          that create measurable impact — not just impressive demos.
+        </p>
+        <div class="hero__actions reveal">
+          <a href="#contact" class="btn btn--primary">Book a Strategy Call</a>
+          <a href="#services" class="btn btn--ghost">See Our Services</a>
+        </div>
+        <div class="hero__stats reveal">
+          <div class="stat">
+            <span class="stat__number">150<span class="stat__plus">+</span></span>
+            <span class="stat__label">AI Projects Delivered</span>
+          </div>
+          <div class="stat__divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat__number">40<span class="stat__plus">+</span></span>
+            <span class="stat__label">Enterprise Clients</span>
+          </div>
+          <div class="stat__divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat__number">94<span class="stat__pct">%</span></span>
+            <span class="stat__label">Client Retention</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="eyebrow">What We Build With You</p>
+          <h2>End-to-end AI consulting,<br />from strategy to production.</h2>
+          <p class="section-sub">Every engagement is led by engineers who have shipped production AI systems — not slide-makers.</p>
+        </div>
+        <div class="services__grid">
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
+              </svg>
+            </div>
+            <h3>AI Strategy &amp; Roadmapping</h3>
+            <p>Define which AI investments create real ROI before writing a line of code. We deliver a clear, prioritized roadmap tied to your business goals.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h.01M15 9h.01M9 15h6"/>
+              </svg>
+            </div>
+            <h3>Custom AI Development</h3>
+            <p>Build LLM-powered tools, agents, and pipelines tailored to your workflows. We ship production systems — not prototypes that gather dust.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>
+              </svg>
+            </div>
+            <h3>Data Infrastructure</h3>
+            <p>Design the pipelines, warehouses, and labeling systems that AI actually needs to perform. We fix the data problems before they become model problems.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3>Responsible AI &amp; Governance</h3>
+            <p>Deploy models your legal, compliance, and ethics teams can stand behind. We embed governance from day one — not as an afterthought.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+              </svg>
+            </div>
+            <h3>AI Performance Optimization</h3>
+            <p>Audit and improve models already in production. We reduce inference costs, increase accuracy, and eliminate the latency that kills user adoption.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3>Team Enablement &amp; Training</h3>
+            <p>Upskill your engineers and business teams to own and extend what we build. We leave you capable, not dependent.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY US -->
+    <section class="why" id="why">
+      <div class="container why__inner">
+        <div class="why__left reveal">
+          <p class="eyebrow">Why Bright Rise</p>
+          <h2>Practitioners,<br />not slide-makers.</h2>
+          <p>Every engagement is led by engineers and strategists who have shipped real AI systems at scale. We work inside your team's tools, standups, and repos — not alongside them.</p>
+        </div>
+        <ul class="why__list" role="list">
+          <li class="why__item reveal">
+            <svg class="why__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <polyline points="6,10 9,13 14,7" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <strong>No vendor lock-in</strong>
+              <p>We recommend what fits your stack, not what earns us a referral fee.</p>
+            </div>
+          </li>
+          <li class="why__item reveal">
+            <svg class="why__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <polyline points="6,10 9,13 14,7" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <strong>Embedded, not outsourced</strong>
+              <p>We work inside your team's tools, standups, and repos.</p>
+            </div>
+          </li>
+          <li class="why__item reveal">
+            <svg class="why__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <polyline points="6,10 9,13 14,7" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <strong>Outcomes over outputs</strong>
+              <p>Contracts are scoped around measurable business goals, not billable hours.</p>
+            </div>
+          </li>
+          <li class="why__item reveal">
+            <svg class="why__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="9" stroke="#F0A500" stroke-width="1.5"/>
+              <polyline points="6,10 9,13 14,7" stroke="#F0A500" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <strong>Full handoff, every time</strong>
+              <p>We leave you with documentation and a team that owns the system.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="container contact__inner">
+        <div class="contact__glow" aria-hidden="true"></div>
+        <div class="contact__content reveal">
+          <p class="eyebrow">Let's Talk</p>
+          <h2>Ready to move from<br />experiments to impact?</h2>
+          <p>Book a 30-minute strategy call. No sales pitch — just an honest conversation about whether AI can move the needle for your business.</p>
+          <a href="mailto:hello@brightrise.ai" class="btn btn--primary">hello@brightrise.ai</a>
+          <p class="contact__note">Response within one business day.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#" class="nav__logo footer__logo" aria-label="Bright Rise AI home">
+        <svg class="nav__logo-mark" width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 2L17.5 10.5L26 14L17.5 17.5L14 26L10.5 17.5L2 14L10.5 10.5L14 2Z" fill="url(#star-grad-footer)"/>
+          <defs>
+            <linearGradient id="star-grad-footer" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F0A500"/>
+              <stop offset="100%" stop-color="#3B8BFF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="nav__wordmark">Bright Rise <span>AI</span></span>
+      </a>
+      <p class="footer__copy">&copy; <span id="year"></span> Bright Rise AI. All rights reserved.</p>
+      <div class="footer__social">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

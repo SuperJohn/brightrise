@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Bright Rise AI">
+  <rect width="128" height="128" rx="28" fill="#080E1A"/>
+  <path d="M64 10L75 42L107 53L75 64L64 96L53 64L21 53L53 42L64 10Z" fill="url(#g)"/>
+  <defs>
+    <linearGradient id="g" x1="21" y1="10" x2="107" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F0A500"/>
+      <stop offset="100%" stop-color="#3B8BFF"/>
+    </linearGradient>
+  </defs>
+</svg>
